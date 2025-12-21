@@ -1,0 +1,21 @@
+services:
+  - type: worker
+    name: swarmsentinel-v3
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: XAI_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: SIM_MODE
+        value: "True"
+      - key: POLL_INTERVAL
+        value: "60"
+      - key: XAI_MODEL
+        value: "grok-3-fast"
