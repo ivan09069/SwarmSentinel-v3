@@ -1,0 +1,22 @@
+# SwarmSentinel v3 - Hardened Dependencies
+# Updated: 2024-12-19
+
+# LangChain (latest stable)
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-core>=0.3.0
+langgraph>=0.2.0
+
+# Utils
+python-dotenv>=1.0.1
+requests>=2.32.3
+
+# Data
+pandas>=2.2.2
+pandas-ta>=0.3.14b0
+
+# Blockchain (optional)
+web3>=6.15.1
+
+# Security: Pin urllib3 to avoid CVE-2024-37891
+urllib3>=2.2.2
