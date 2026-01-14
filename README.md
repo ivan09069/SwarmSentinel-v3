@@ -1,10 +1,10 @@
 # SwarmSentinel v3 🐝
 
-LangGraph crypto sentiment analysis engine powered by Grok AI.
+LangGraph crypto sentiment trading bot powered by Grok AI.
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
-![LangGraph](https://img.shields.io/badge/LangGraph-FF6B6B?style=flat)
-![Grok](https://img.shields.io/badge/Grok_AI-000000?style=flat&logo=x&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-Pipeline-FF6B6B?style=flat)
+![Grok](https://img.shields.io/badge/Grok_AI-XAI-000000?style=flat)
 
 ## 5-Node Pipeline Architecture
 
@@ -13,20 +13,27 @@ LangGraph crypto sentiment analysis engine powered by Grok AI.
 │  SENTIMENT   │───▶│    WHALE     │───▶│   REGIME     │
 │  ANALYSIS    │    │   SCORING    │    │  DETECTION   │
 └──────────────┘    └──────────────┘    └──────────────┘
-                                              │
-                    ┌──────────────┐    ┌─────▼────────┐
+                                               │
+                    ┌──────────────┐    ┌──────▼───────┐
                     │  EXECUTION   │◀───│   STRATEGY   │
                     │   ENGINE     │    │   ROUTING    │
                     └──────────────┘    └──────────────┘
 ```
 
+| Node | Function |
+|------|----------|
+| Sentiment | Analyze social/news sentiment via Grok |
+| Whale Scoring | Track large wallet movements |
+| Regime Detection | Market condition classification |
+| Strategy Routing | Select optimal trading strategy |
+| Execution | Execute trades with risk management |
+
 ## Features
 
-- 🧠 **Grok AI Integration** - xAI's frontier model for market analysis
-- 📊 **Volume Alpha Attribution** - Whale movement detection
-- 🔄 **Live Market Data** - Real-time price feeds
-- 🔐 **Security Hardened** - Audit fixes applied Dec 2024
-- 📱 **Telegram Alerts** - Optional notification system
+- 🤖 **Grok AI Integration** - XAI API for sentiment analysis
+- 📊 **Volume Alpha Attribution** - Track smart money flows
+- 🔔 **Telegram Alerts** - Real-time notifications
+- 🛡️ **Security Hardened** - Audit fixes applied Dec 2024
 - 🧪 **Simulation Mode** - Safe testing environment
 
 ## Quick Start
@@ -49,14 +56,14 @@ python main.py
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `XAI_API_KEY` | ✅ | Grok API key from x.ai |
-| `TELEGRAM_BOT_TOKEN` | ❌ | For alert notifications |
-| `TELEGRAM_CHAT_ID` | ❌ | Your Telegram chat ID |
-| `SIM_MODE` | ❌ | `True` for paper trading |
-| `POLL_INTERVAL` | ❌ | Seconds between cycles (default: 60) |
-| `XAI_MODEL` | ❌ | Model selection (default: grok-3-fast) |
+```bash
+XAI_API_KEY=xai-...          # Required - Grok API
+TELEGRAM_BOT_TOKEN=...       # Optional - Alerts
+TELEGRAM_CHAT_ID=...         # Optional - Alerts
+SIM_MODE=True                # True=paper trading
+POLL_INTERVAL=60             # Seconds between cycles
+XAI_MODEL=grok-3-fast        # AI model
+```
 
 ## Deployment
 
@@ -80,15 +87,15 @@ docker run -d --env-file .env swarmsentinel
 
 | Component | Status |
 |-----------|--------|
-| Core Engine | ✅ Production Ready |
-| Security Audit | ✅ Hardened (Dec 2024) |
-| Telegram Integration | ✅ Optional |
-| Multi-chain Support | 🔄 In Progress |
+| Core Pipeline | ✅ Production Ready |
+| Security Audit | ✅ Passed |
+| Telegram Alerts | ✅ Working |
+| Live Trading | ⚠️ Requires API Keys |
 
 ## Part of EchoForge Studios
 
 - [EchoForge](https://github.com/ivan09069/EchoForge) - Portfolio Tracker
-- [JIT-Command-Center](https://github.com/ivan09069/JIT-Command-Center) - Monitoring Dashboard
+- [JIT-Command-Center](https://github.com/ivan09069/JIT-Command-Center) - Monitoring
 - [echoforge-texas-platform](https://github.com/ivan09069/echoforge-texas-platform) - Energy Platform
 
 ---
