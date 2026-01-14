@@ -1,41 +1,97 @@
-# SwarmSentinel v3 - Production Deployment
+# SwarmSentinel v3 🐝
 
-## Overview
-LangChain/LangGraph-based crypto trading pattern detection engine using Grok AI.
+LangGraph crypto sentiment analysis engine powered by Grok AI.
 
-## Features
-- 5-node LangGraph pipeline
-- Volume alpha attribution testing
-- Live market data integration
-- Security-hardened (audit fixes applied 2024-12-19)
-- Optional Telegram alerts
-- Simulation mode for safe testing
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-FF6B6B?style=flat)
+![Grok](https://img.shields.io/badge/Grok_AI-000000?style=flat&logo=x&logoColor=white)
 
-## Requirements
-- Python 3.10+
-- XAI API key (for Grok access)
-- Optional: Telegram bot token for alerts
+## 5-Node Pipeline Architecture
 
-## Environment Variables
-```bash
-XAI_API_KEY=xai-...          # Required
-TELEGRAM_BOT_TOKEN=...       # Optional
-TELEGRAM_CHAT_ID=...         # Optional
-SIM_MODE=True                # Set False for live trading
-POLL_INTERVAL=60             # Seconds between cycles
-XAI_MODEL=grok-3-fast        # AI model to use
+```
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  SENTIMENT   │───▶│    WHALE     │───▶│   REGIME     │
+│  ANALYSIS    │    │   SCORING    │    │  DETECTION   │
+└──────────────┘    └──────────────┘    └──────────────┘
+                                              │
+                    ┌──────────────┐    ┌─────▼────────┐
+                    │  EXECUTION   │◀───│   STRATEGY   │
+                    │   ENGINE     │    │   ROUTING    │
+                    └──────────────┘    └──────────────┘
 ```
 
-## Deployment
-Configured for Render.com with `render.yaml`.
+## Features
 
-Deploy to Render:
-1. Push to GitHub
-2. Connect repo in Render dashboard
-3. Add environment variables
-4. Deploy
+- 🧠 **Grok AI Integration** - xAI's frontier model for market analysis
+- 📊 **Volume Alpha Attribution** - Whale movement detection
+- 🔄 **Live Market Data** - Real-time price feeds
+- 🔐 **Security Hardened** - Audit fixes applied Dec 2024
+- 📱 **Telegram Alerts** - Optional notification system
+- 🧪 **Simulation Mode** - Safe testing environment
+
+## Quick Start
+
+```bash
+# Clone
+git clone https://github.com/ivan09069/SwarmSentinel-v3.git
+cd SwarmSentinel-v3
+
+# Install
+pip install -r requirements.txt
+
+# Configure
+cp .env.example .env
+# Edit .env with your API keys
+
+# Run
+python main.py
+```
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `XAI_API_KEY` | ✅ | Grok API key from x.ai |
+| `TELEGRAM_BOT_TOKEN` | ❌ | For alert notifications |
+| `TELEGRAM_CHAT_ID` | ❌ | Your Telegram chat ID |
+| `SIM_MODE` | ❌ | `True` for paper trading |
+| `POLL_INTERVAL` | ❌ | Seconds between cycles (default: 60) |
+| `XAI_MODEL` | ❌ | Model selection (default: grok-3-fast) |
+
+## Deployment
+
+### Railway
+```bash
+railway login
+railway init
+railway up
+```
+
+### Render
+Uses `render.yaml` - connect repo and deploy.
+
+### Docker
+```bash
+docker build -t swarmsentinel .
+docker run -d --env-file .env swarmsentinel
+```
 
 ## Status
-- ✅ Security hardened
-- ✅ Production ready
-- ⚠️ Currently showing DEGRADED on Railway (needs env vars)
+
+| Component | Status |
+|-----------|--------|
+| Core Engine | ✅ Production Ready |
+| Security Audit | ✅ Hardened (Dec 2024) |
+| Telegram Integration | ✅ Optional |
+| Multi-chain Support | 🔄 In Progress |
+
+## Part of EchoForge Studios
+
+- [EchoForge](https://github.com/ivan09069/EchoForge) - Portfolio Tracker
+- [JIT-Command-Center](https://github.com/ivan09069/JIT-Command-Center) - Monitoring Dashboard
+- [echoforge-texas-platform](https://github.com/ivan09069/echoforge-texas-platform) - Energy Platform
+
+---
+
+**Built by EchoForge Studios** | *Forged, not finished*
+
