@@ -27,6 +27,7 @@ class RedactingFormatter(logging.Formatter):
     PATTERNS = [
         (re.compile(r'(api[_-]?key|token|secret|password)["\s:=]+["\']?[\w\-]+', re.I), r'\1=***REDACTED***'),
         (re.compile(r'xai-[\w\-]+'), '***API_KEY***'),
+        (re.compile(r'gsk_[\w\-]+'), '***API_KEY***'),
         (re.compile(r'sk-[\w\-]+'), '***API_KEY***'),
     ]
 
@@ -55,10 +56,10 @@ logger = setup_logging()
 @dataclass
 class Config:
     """Centralized configuration - no magic numbers"""
-    # API
-    XAI_API_KEY: str = field(default_factory=lambda: os.getenv("XAI_API_KEY", ""))
-    XAI_MODEL: str = field(default_factory=lambda: os.getenv("XAI_MODEL", "grok-3-fast"))
-    XAI_BASE_URL: str = "https://api.x.ai/v1"
+    # API (Groq - free tier, fast inference)
+    GROQ_API_KEY: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
+    GROQ_MODEL: str = field(default_factory=lambda: os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"))
+    GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
     REQUEST_TIMEOUT: int = 30
     
     # Runtime
@@ -93,10 +94,10 @@ class Config:
         """Validate critical config before startup"""
         errors = []
         
-        if not self.XAI_API_KEY:
-            errors.append("XAI_API_KEY is required")
-        elif not self.XAI_API_KEY.startswith(("xai-", "sk-")):
-            errors.append("XAI_API_KEY format invalid")
+        if not self.GROQ_API_KEY:
+            errors.append("GROQ_API_KEY is required")
+        elif not self.GROQ_API_KEY.startswith("gsk_"):
+            errors.append("GROQ_API_KEY format invalid (should start with gsk_)")
         
         if self.POLL_INTERVAL < self.MIN_CYCLE_INTERVAL:
             errors.append(f"POLL_INTERVAL must be >= {self.MIN_CYCLE_INTERVAL}s")
@@ -227,9 +228,9 @@ def get_llm():
             return f"[Real-time X posts for: {sanitize_input(query)}] (simulated {limit} posts)"
         
         _llm_instance = ChatOpenAI(
-            model=config.XAI_MODEL,
-            base_url=config.XAI_BASE_URL,
-            api_key=config.XAI_API_KEY,
+            model=config.GROQ_MODEL,
+            base_url=config.GROQ_BASE_URL,
+            api_key=config.GROQ_API_KEY,
             temperature=0.3,
             request_timeout=config.REQUEST_TIMEOUT,
         ).bind_tools([x_keyword_search])
@@ -534,7 +535,7 @@ def main():
     
     logger.info(f"Mode: {'SIMULATION' if config.SIM_MODE else 'LIVE'}")
     logger.info(f"Poll interval: {config.POLL_INTERVAL}s")
-    logger.info(f"Model: {config.XAI_MODEL}")
+    logger.info(f"Model: {config.GROQ_MODEL}")
     logger.info("=" * 50)
     
     cycle_count = 0
