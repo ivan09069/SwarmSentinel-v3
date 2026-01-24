@@ -11,6 +11,7 @@ import math
 import json
 import logging
 import re
+import httpx
 from datetime import datetime, timezone
 from typing import TypedDict, Dict, Any, Optional
 from dataclasses import dataclass, field
@@ -113,6 +114,43 @@ class Config:
 
 
 config = Config()
+
+
+# ==================== PIPELINE INTEGRATION ====================
+PIPELINE_ENDPOINTS = {
+    "executor": os.getenv("EXECUTOR_URL", "https://trade-executor-service.onrender.com/signal"),
+    "monitor": os.getenv("MONITOR_URL", "https://balance-monitor.onrender.com"),
+}
+EXECUTOR_API_KEY = os.getenv("EXECUTOR_API_KEY", "echoforge-trade-2026")
+
+def send_signal_to_executor(signal: dict) -> bool:
+    """Send trading signal to Trade Executor Service"""
+    if config.SIM_MODE:
+        logger.info(f"[SIM] Would send signal: {signal.get('strategy', 'UNKNOWN')}")
+        return True
+    
+    try:
+        payload = {
+            "action": "swap",
+            "chain": "base",
+            "token_in": "ETH",
+            "token_out": "USDC",
+            "amount": 0.01,
+            "max_risk": 0.3,
+            "confidence": abs(signal.get("momentum", 0)),
+            "source": "swarmsentinel-v3",
+            "strategy": signal.get("strategy"),
+            "regime": signal.get("regime"),
+            "execute": signal.get("strategy") in ["TREND_FOLLOWING", "SELECTIVE_SCALPING"]
+        }
+        
+        headers = {"X-API-Key": EXECUTOR_API_KEY, "Content-Type": "application/json"}
+        resp = httpx.post(PIPELINE_ENDPOINTS["executor"], json=payload, headers=headers, timeout=10)
+        logger.info(f"Signal sent to executor: {resp.status_code}")
+        return resp.status_code == 200
+    except Exception as e:
+        logger.warning(f"Failed to send signal to executor: {e}")
+        return False
 
 
 # ==================== CIRCUIT BREAKER ====================
@@ -558,6 +596,10 @@ def main():
             if result and not result.get("errors"):
                 circuit_breaker.record_success()
                 print(json.dumps(result["signal"], indent=2))
+                
+                # PIPELINE: Send signal to Trade Executor
+                if result.get("signal"):
+                    send_signal_to_executor(result["signal"])
             else:
                 circuit_breaker.record_failure()
                 logger.warning(f"Cycle completed with errors: {result.get('errors', [])}")
